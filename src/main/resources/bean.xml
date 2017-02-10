@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 扫描指定包, 带有Component注解的自动定义为Spring Bean-->
+    <context:component-scan base-package="org.smart4j.framework.proxy.testadvisor" />
+
+    <!-- 配置一个切面 -->
+    <bean id="greetingAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="greetingAroundAdvice" />
+        <property name="pattern" value="org.smart4j.framework.proxy.testadvisor.GreetingImpl.good.*" />
+    </bean>
+
+    <!-- 配置一个代理 -->
+    <bean id="greetingProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interfaces" value="org.smart4j.framework.proxy.testintroadvice.Apology" /> <!-- 代理的接口 -->
+        <property name="target" ref="greetingImpl" />                                          <!-- 代理的对象 -->
+        <property name="interceptorNames" value="greetingAdvisor" /> <!-- 切面 -->
+        <!-- 注意proxyTargetClass 属性, 它表明是否代理目标类, 默认 false 代理接口
+         此时 Spring 用 JDK 动态代理
+         如果为 true 用 CGLib 的动态代理-->
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+</beans>

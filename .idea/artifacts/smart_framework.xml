@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="smart-framework">
+    <output-path>$PROJECT_DIR$/out/artifacts/smart_framework</output-path>
+    <root id="archive" name="smart-framework.jar" />
+  </artifact>
+</component>
